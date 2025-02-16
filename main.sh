@@ -52,6 +52,8 @@ for target in "${targets[@]}"; do
 			declare triplet='alpha-unknown-openbsd';;
 	esac
 	
+	declare openbsd_version='7.6'
+	
 	declare output="${temporary_directory}/data.tgz"
 	declare sysroot_directory="${workdir}/${triplet}"
 	declare tarball_filename="${sysroot_directory}.tar.xz"
@@ -66,8 +68,8 @@ for target in "${targets[@]}"; do
 	fi
 	
 	declare urls=(
-		"https://mirrors.ucr.ac.cr/pub/OpenBSD/7.0/${target}/base70.tgz"
-		"https://mirrors.ucr.ac.cr/pub/OpenBSD/7.0/${target}/comp70.tgz"
+		"https://mirrors.ucr.ac.cr/pub/OpenBSD/${openbsd_version}/${target}/base${openbsd_version//.}.tgz"
+		"https://mirrors.ucr.ac.cr/pub/OpenBSD/${openbsd_version}/${target}/comp${openbsd_version//.}.tgz"
 	)
 	
 	for url in "${urls[@]}"; do
@@ -101,7 +103,7 @@ for target in "${targets[@]}"; do
 	
 	echo "- Creating tarball at ${tarball_filename}"
 	
-	tar --directory="$(dirname "${sysroot_directory}")" --create --file=- "$(basename "${sysroot_directory}")" | xz  --compress -9 > "${tarball_filename}"
+	tar --directory="$(dirname "${sysroot_directory}")" --create --file=- "$(basename "${sysroot_directory}")" | xz --threads='0' --extreme --compress -9 > "${tarball_filename}"
 	sha256sum "${tarball_filename}" | sed "s|$(dirname "${sysroot_directory}")/||" > "${tarball_filename}.sha256"
 	
 	rm --force --recursive "${sysroot_directory}"
