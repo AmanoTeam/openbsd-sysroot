@@ -52,7 +52,7 @@ for target in "${targets[@]}"; do
 			declare triplet='alpha-unknown-openbsd';;
 	esac
 	
-	declare openbsd_version='7.6'
+	declare openbsd_version='7.0'
 	
 	declare output="${temporary_directory}/data.tgz"
 	declare sysroot_directory="${workdir}/${triplet}"
@@ -100,6 +100,11 @@ for target in "${targets[@]}"; do
 		
 		ln --symbolic "${source}" "./${destination}"
 	done <<< "$(find '.' -type 'f' -name 'lib*.so.*')"
+	
+	# Fix name collision when compiling GCC and binutils
+	while read file; do
+		sed --in-place --regexp-extended 's/__size_t(\s|,|;)/__be8ad1b\1/g' "${file}"
+	done <<< "$(find "${sysroot_directory}/include" -type 'f' -wholename '*.h')"
 	
 	echo "- Creating tarball at ${tarball_filename}"
 	
