@@ -52,7 +52,7 @@ for target in "${targets[@]}"; do
 			declare triplet='alpha-unknown-openbsd';;
 	esac
 	
-	declare openbsd_version='7.0'
+	declare openbsd_version='7.7'
 	
 	declare output="${temporary_directory}/data.tgz"
 	declare sysroot_directory="${workdir}/${triplet}"
@@ -98,6 +98,7 @@ for target in "${targets[@]}"; do
 		"${sysroot_directory}/lib/clang" \
 		"${sysroot_directory}/lib/debug" \
 		"${sysroot_directory}/lib/locate" \
+		"${sysroot_directory}/lib/gcc-lib" \
 		"${sysroot_directory}/lib/pkgconfig" \
 		"${sysroot_directory}/lib/libc++"* \
 		"${sysroot_directory}/include/c++" \
