@@ -92,6 +92,18 @@ for target in "${targets[@]}"; do
 	
 	cd "${sysroot_directory}/lib"
 	
+	rm \
+		--force \
+		--recursive \
+		"${sysroot_directory}/lib/clang" \
+		"${sysroot_directory}/lib/debug" \
+		"${sysroot_directory}/lib/locate" \
+		"${sysroot_directory}/lib/pkgconfig" \
+		"${sysroot_directory}/lib/libc++"* \
+		"${sysroot_directory}/include/c++" \
+		"${sysroot_directory}/include/llvm" \
+		"${sysroot_directory}/include/llvm-c"
+	
 	while read source; do
 		IFS='.' read -ra parts <<< "${source}"
 		
