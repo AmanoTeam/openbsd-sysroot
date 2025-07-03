@@ -87,10 +87,8 @@ for target in "${targets[@]}"; do
 		
 		echo "- Unpacking ${output}"
 		
-		tar --directory="${sysroot_directory}" --strip=2 --extract --file="${output}" './usr/lib' './usr/include'
+		proot --link2symlink tar --directory="${sysroot_directory}" --strip=2 --extract --file="${output}" './usr/lib' './usr/include'
 	done
-	
-	cd "${sysroot_directory}/lib"
 	
 	rm \
 		--force \
@@ -101,9 +99,16 @@ for target in "${targets[@]}"; do
 		"${sysroot_directory}/lib/gcc-lib" \
 		"${sysroot_directory}/lib/pkgconfig" \
 		"${sysroot_directory}/lib/libc++"* \
+		"${sysroot_directory}/lib/libstdc++"* \
+		"${sysroot_directory}/lib/libsupc++"* \
+		"${sysroot_directory}/lib/libLLVM"* \
 		"${sysroot_directory}/include/c++" \
 		"${sysroot_directory}/include/llvm" \
 		"${sysroot_directory}/include/llvm-c"
+	
+	pushd "${sysroot_directory}/lib"
+	
+	find . -type l | xargs ls -l | awk '{print "unlink $(basename "$9") && ln --symbolic ./$(basename "$11") ./$(basename "$9")"}' | bash
 	
 	while read source; do
 		IFS='.' read -ra parts <<< "${source}"
@@ -113,6 +118,8 @@ for target in "${targets[@]}"; do
 		
 		ln --symbolic "${source}" "./${destination}"
 	done <<< "$(find '.' -type 'f' -name 'lib*.so.*')"
+	
+	pushd
 	
 	# Fix name collision when compiling GCC and binutils
 	while read file; do

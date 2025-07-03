@@ -15,6 +15,16 @@ jobs:
     - uses: actions/checkout@main
       with:
         submodules: true
+    - name: Install PRoot
+      run: |
+        curl \
+            --location \
+            --url 'https://proot.gitlab.io/proot/bin/proot' \
+            --output '/tmp/proot'
+        
+        chmod +x '/tmp/proot'
+        
+        echo '/tmp' >> "${GITHUB_PATH}"
     - name: Generate system roots
       run: |
         bash './main.sh'
@@ -25,7 +35,7 @@ jobs:
     - name: Create release
       uses: softprops/action-gh-release@master
       with:
-        tag_name: 0.5
+        tag_name: 0.6
         name: OpenBSD sysroots
         files: ./*.xz*
         draft: false
