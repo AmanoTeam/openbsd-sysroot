@@ -35,7 +35,7 @@ jobs:
     - name: Create release
       uses: softprops/action-gh-release@master
       with:
-        tag_name: 0.6
+        tag_name: 0.1
         name: OpenBSD sysroots
         files: ./*.xz*
         draft: false

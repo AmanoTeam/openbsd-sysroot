@@ -52,7 +52,7 @@ for target in "${targets[@]}"; do
 			declare triplet='alpha-unknown-openbsd';;
 	esac
 	
-	declare openbsd_version='7.7'
+	declare openbsd_version='7.8'
 	
 	declare output="${temporary_directory}/data.tgz"
 	declare sysroot_directory="${workdir}/${triplet}"
@@ -68,8 +68,8 @@ for target in "${targets[@]}"; do
 	fi
 	
 	declare urls=(
-		"https://mirrors.ucr.ac.cr/pub/OpenBSD/${openbsd_version}/${target}/base${openbsd_version//.}.tgz"
-		"https://mirrors.ucr.ac.cr/pub/OpenBSD/${openbsd_version}/${target}/comp${openbsd_version//.}.tgz"
+		"https://cloudflare.cdn.openbsd.org/pub/OpenBSD/${openbsd_version}/${target}/base${openbsd_version//.}.tgz"
+		"https://cloudflare.cdn.openbsd.org/pub/OpenBSD/${openbsd_version}/${target}/comp${openbsd_version//.}.tgz"
 	)
 	
 	for url in "${urls[@]}"; do
